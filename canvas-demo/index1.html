@@ -6,6 +6,32 @@
   const imgSrcArr = ["http://panpan.dapanna.cn//image-20221015115049427.png","http://panpan.dapanna.cn//image-20221015115033342.png", 'http://panpan.dapanna.cn//image-20221015115015133.png', 'http://panpan.dapanna.cn//image-20221015114950581.png', 'http://panpan.dapanna.cn//image-20221015114245445.png', 'http://panpan.dapanna.cn//image-20221015114437817.png', 'http://panpan.dapanna.cn//image-20221015114526684.png', 'http://panpan.dapanna.cn//image-20221015114610049.png', 'http://panpan.dapanna.cn//image-20221015114653366.png', 'http://panpan.dapanna.cn//image-20221015114722067.png', 'http://panpan.dapanna.cn//image-20221015114802665.png', 'http://panpan.dapanna.cn//image-20221015114927924.png']
 
   const img = new Image()
-  let i = 0
-  
+  var i = 0
+
+    // 重新封装requestAnimationFrame函数：
+    function mySetInterval(func, detay) {
+      var i = 0
+      myReq = requestAnimationFrame(function fn() {
+        // 判断现在处于60帧的第几帧，如果是目标帧的话，调用func函数：
+        if (i % parseInt(60 / (1000 / detay)) == 0) {
+          func();
+        }
+        i++
+        // 让i值每秒增加60，循环调用func函数：
+        requestAnimationFrame(fn)
+      })
+    }
+
+    // 不断绘制新的图片：
+    mySetInterval(() => {
+      img.src = imgSrcArr[i]
+      img.onload = () => {
+        ctx.drawImage(img, 60, 120)
+      }
+      i++
+      if (i === 12) {
+        i = 0
+      }
+    }, 200)
+
 </script>
